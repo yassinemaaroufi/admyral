@@ -1,0 +1,25 @@
+
+#-----------------------------------------------------------#
+|    Author:        Yassine Maaroufi                        |
+|    Email:         yassinemaaroufi@gmail.com               |
+|                                                           |
+|    Description:   Admyral is a minimal keyboard driven    | 
+|                   web browser written in Python and Qt    |
+|                                                           |
+|    Licence:       GPLv3                                   |
+#-----------------------------------------------------------#
+
+
+#-------- Shortcuts ----------------------------------------#
+|    * Ctrl+K       Next tab                                |
+|    * Ctrl+J       Previous tab                            |
+|    * Ctrl+T       Open new tab                            |
+|    * Ctrl+W       Close tab                               |
+|    * Ctrl+Q       Close browser                           |
+|                                                           |
+|    * F6           Open URL bar                            |
+|                                                           |
+#--------- When URL bar is open ----------------------------#
+|    * Esc          Close URL bar                           |
+|    * Enter        Go to URL                               |
+#-----------------------------------------------------------#
