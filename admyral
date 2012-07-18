@@ -11,31 +11,35 @@ from PyQt4.QtWebKit import *
 TABS = []						# Tabs list
 
 def closeWidget(parent, w):
+	parent.show()	#
 	w.close()
 	w.destroy()
 	parent.setFocus()
 	parent.focusPreviousChild()
 
 def changeURL(parent, w):
+	parent.show()	#
 	url = w.text()
 	parent.setUrl(QUrl(url))
 	w.close()
 	w.destroy()
 
 def URLBar(parent):
-	w = QLineEdit(parent)
+	#w = QLineEdit(parent)
+	w = QLineEdit()
 	w.setText(parent.url().toString())
-	w.resize(parent.width()/3, 20)
-	w.move(parent.width()/3, parent.height()/2)
+	#w.resize(parent.width()/3, 20)
+	#w.move(parent.width()/3, parent.height()/2)
 	w.setFocus()
 	QShortcut("Esc", w, activated = lambda: closeWidget(parent, w))
 	QObject.connect(w, SIGNAL('returnPressed()'), lambda: changeURL(parent, w))
 	w.show()
+	parent.hide()
 
 def closeTab(parent):
 	global TABS
-	TABS[parent.tabPosition - 1].show()
-	TABS.pop(parent.tabPosition)
+	TABS[TABS.index(parent) - 1].show()
+	TABS.pop(TABS.index(parent))
 	parent.close()
 	parent.destroy()
 
@@ -49,30 +53,54 @@ def callNewTab(parent):
 
 def nextTab(parent):
 	global TABS
-	n = 0 if (parent.tabPosition + 1 > len(TABS) - 1) else (parent.tabPosition + 1)
-	TABS[n].show()
-	parent.hide()
+	if len(TABS) > 1:
+		n = 0 if (TABS.index(parent) + 1 > len(TABS) - 1) else (TABS.index(parent) + 1)
+		TABS[n].show()
+		parent.hide()
 
 def prevTab(parent):
 	global TABS
-	n = len(TABS) - 1 if (parent.tabPosition - 1 < 0) else (parent.tabPosition - 1)
-	TABS[n].show()
+	if len(TABS) > 1:
+		n = len(TABS) - 1 if (TABS.index(parent) - 1 < 0) else (TABS.index(parent) - 1)
+		TABS[n].show()
+		parent.hide()
+
+def changeTab(parent, w):
+	global TABS
+	if len(TABS) > 1:
+		n = w.currentRow()
+		closeWidget(parent, w)
+		parent.hide()
+		TABS[n].show()
+
+def listTabs(parent):
+	global TABS
+	#w = QListWidget(parent)
+	w = QListWidget()
+	for i in TABS:
+		w.addItem(i.title())
+	#w.resize(parent.width()/3, parent.height()/3)
+	#w.move(parent.width()/3, parent.height()/3)
+	w.setFocus()
+	QShortcut("Esc", w, activated = lambda: closeWidget(parent, w))
+	QShortcut("Return", w, activated = lambda: changeTab(parent, w))
 	parent.hide()
+	w.show()
 
 def initTab():
 	global TABS
 	v = QWebView()
 	v.load(QUrl(url))
 	v.setFocus()
-	QShortcut("Ctrl+Q", v, activated = closeTabs)
-	QShortcut("Ctrl+W", v, activated = lambda: closeTab(v))
-	QShortcut("Ctrl+L", v, activated = lambda: URLBar(v))
-	QShortcut("F6", v, activated = lambda: URLBar(v))
-	QShortcut("Ctrl+T", v, activated = lambda: callNewTab(v))
-	QShortcut("Ctrl+K", v, activated = lambda: nextTab(v))
 	QShortcut("Ctrl+J", v, activated = lambda: prevTab(v))
+	QShortcut("Ctrl+K", v, activated = lambda: nextTab(v))
+	QShortcut("Ctrl+L", v, activated = lambda: URLBar(v))
+	QShortcut("Ctrl+Q", v, activated = closeTabs)
+	QShortcut("Ctrl+T", v, activated = lambda: callNewTab(v))
+	QShortcut("Ctrl+W", v, activated = lambda: closeTab(v))
+	QShortcut("F2", v, activated = lambda: listTabs(v))
+	QShortcut("F6", v, activated = lambda: URLBar(v))
 	v.show()
-	v.tabPosition = len(TABS)
 	TABS += [v]
 
 url = 'http://www.google.com'	# Default URL

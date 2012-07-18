@@ -11,15 +11,18 @@
 
 
 #-------- Shortcuts ----------------------------------------#
-|    * Ctrl+K       Next tab                                |
-|    * Ctrl+J       Previous tab                            |
-|    * Ctrl+T       Open new tab                            |
-|    * Ctrl+W       Close tab                               |
-|    * Ctrl+Q       Close browser                           |
 |                                                           |
-|    * F6           Open URL bar                            |
+|    * Ctrl+J       Previous Tab                            |
+|    * Ctrl+K       Next Tab                                |
+|    * Ctrl+L       Open URL Bar                            |
+|    * Ctrl+T       Open New Tab                            |
+|    * Ctrl+W       Close Tab                               |
+|    * Ctrl+Q       Close Browser                           |
+|                                                           |
+|    * F2           Open Tabs List                          |
+|    * F6           Open URL Bar                            |
 |                                                           |
 #--------- When URL bar is open ----------------------------#
-|    * Esc          Close URL bar                           |
+|    * Esc          Close URL Bar                           |
 |    * Enter        Go to URL                               |
 #-----------------------------------------------------------#
