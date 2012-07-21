@@ -1,8 +1,13 @@
 #!/usr/bin/python
 
-# Browser name: Admyral
+#
+# Admyral is a minimal keyboard driven web browser written in Python and Qt
+#
+# Author    Yassine Maaroufi
+# Licence   GPLv3
+# 
 
-import sys
+import sys, re
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -15,11 +20,18 @@ def closeWidget(parent, w):
 	w.close()
 	w.destroy()
 	parent.setFocus()
-	parent.focusPreviousChild()
+	#parent.focusPreviousChild()
 
 def changeURL(parent, w):
 	parent.show()	#
 	url = w.text()
+	if not url.startswith('http://'):
+		r = re.compile('^[a-zA-Z0-9\-]*\.?[a-zA-Z0-9\-]*\.[a-z]{2,4}')
+		if r.findall(url) == [] :
+			url = 'http://www.google.com/search?q=' + url
+		else:
+			url = 'http://' + url
+
 	parent.setUrl(QUrl(url))
 	w.close()
 	w.destroy()
@@ -87,6 +99,9 @@ def listTabs(parent):
 	parent.hide()
 	w.show()
 
+def openInNewTab(parent):
+	print(QMouseEvent().modifiers())
+
 def initTab():
 	global TABS
 	v = QWebView()
@@ -100,6 +115,7 @@ def initTab():
 	QShortcut("Ctrl+W", v, activated = lambda: closeTab(v))
 	QShortcut("F2", v, activated = lambda: listTabs(v))
 	QShortcut("F6", v, activated = lambda: URLBar(v))
+	#QObject.connect(v, SIGNAL('linkClicked()'), lambda: openInNewTab(v))
 	v.show()
 	TABS += [v]
 
