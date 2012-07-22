@@ -48,6 +48,22 @@ def URLBar(parent):
 	w.show()
 	parent.hide()
 
+def search(parent, w):
+	w.close()
+	w.destroy()
+	parent.show()
+	#parent.findText('', HighlightAllOccurrences)
+	#parent.findText(w.text(), HighlightAllOccurrences)
+	parent.findText(w.text())
+
+def searchBar(parent):
+	w = QLineEdit()
+	w.setFocus()
+	QShortcut("Esc", w, activated = lambda: closeWidget(parent, w))
+	QObject.connect(w, SIGNAL('returnPressed()'), lambda: search(parent, w))
+	w.show()
+	parent.hide()
+
 def closeTab(parent):
 	global TABS
 	TABS[TABS.index(parent) - 1].show()
@@ -102,6 +118,8 @@ def listTabs(parent):
 def openInNewTab(parent):
 	print(QMouseEvent().modifiers())
 
+
+
 def initTab():
 	global TABS
 	v = QWebView()
@@ -114,8 +132,9 @@ def initTab():
 	QShortcut("Ctrl+T", v, activated = lambda: callNewTab(v))
 	QShortcut("Ctrl+W", v, activated = lambda: closeTab(v))
 	QShortcut("F2", v, activated = lambda: listTabs(v))
+	QShortcut("F3", v, activated = lambda: searchBar(v))
 	QShortcut("F6", v, activated = lambda: URLBar(v))
-	#QObject.connect(v, SIGNAL('linkClicked()'), lambda: openInNewTab(v))
+	QObject.connect(v, SIGNAL('linkClicked()'), lambda: openInNewTab(v))
 	v.show()
 	TABS += [v]
 
